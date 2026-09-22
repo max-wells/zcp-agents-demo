@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zerops": {
+      "args": [],
+      "command": "./zcp-serve.sh"
+    }
+  }
+}

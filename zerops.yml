@@ -1,0 +1,28 @@
+zerops:
+  - setup: app
+    build:
+      base: rust@stable
+
+      envVariables:
+        SQLX_OFFLINE: "true"
+
+      buildCommands:
+        - cargo build --release
+
+      deployFiles:
+        - target/release/~zcp-agents-demo
+        - migrations
+
+      cache: target
+
+    run:
+      base: rust@stable
+
+      ports:
+        - port: 3000
+          httpSupport: true
+
+      envVariables:
+        DATABASE_URL: ${postgresql_connectionString}
+
+      start: ./zcp-agents-demo

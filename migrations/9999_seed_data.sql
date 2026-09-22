@@ -1,0 +1,5 @@
+INSERT INTO orders (sku, quantity) VALUES
+    ('SKU-WIDGET-001', 12),
+    ('SKU-GADGET-002', 3),
+    ('SKU-GIZMO-003', 25)
+ON CONFLICT DO NOTHING;

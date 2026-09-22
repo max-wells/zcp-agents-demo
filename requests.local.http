@@ -1,0 +1,31 @@
+@host = http://localhost:3000
+
+GET {{host}}/health
+
+###
+
+GET {{host}}/orders
+
+###
+
+POST {{host}}/orders
+Content-Type: application/json
+
+{
+    "sku": "SKU-WIDGET-001",
+    "quantity": 5
+}
+
+###
+
+# Triggers the DB CHECK (quantity > 0) constraint: quantity is never validated
+# before the INSERT, so this comes back as a raw 500 instead of a clean 4xx.
+# Only visible when tested against the real database, not from reading the
+# app code alone: this is the whole point of the ZCP agents demo.
+POST {{host}}/orders
+Content-Type: application/json
+
+{
+    "sku": "SKU-WIDGET-001",
+    "quantity": 0
+}
