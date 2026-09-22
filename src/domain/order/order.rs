@@ -36,12 +36,6 @@ impl Order {
         Ok(Json(orders))
     }
 
-    // BUG (intentional, for the demo): quantity is never validated before
-    // the INSERT below, so a zero/negative quantity is sent straight to the
-    // DB and trips the CHECK (quantity > 0) constraint instead of being
-    // rejected here with a clean 4xx. Do not fix — this is the bug the
-    // ZCP agents demo is built to surface. OrderError::BadRequest is
-    // already wired to a 400 response; the fix is just uncommenting this:
     #[tracing::instrument(skip(app_state))]
     pub async fn create(
         State(app_state): State<AppState>,
@@ -49,9 +43,9 @@ impl Order {
     ) -> Result<Json<Order>, OrderError> {
         tracing::info!("creating order");
 
-        // if body.quantity <= 0 {
-        //     return Err(OrderError::BadRequest("quantity must be greater than 0".into()));
-        // }
+        if body.quantity <= 0 {
+            return Err(OrderError::BadRequest("quantity must be greater than 0".into()));
+        }
 
         let order = sqlx::query_as!(
             Order,

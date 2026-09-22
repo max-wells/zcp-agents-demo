@@ -12,11 +12,6 @@ pub struct OrderApiError {
 pub enum OrderError {
     #[error("Database error: {0}")]
     Database(#[from] sqlx::Error),
-    // Pre-wired for the demo bugfix: intentionally unused for now. The fix
-    // for the quantity-validation bug in order.rs should be the single line
-    // `return Err(OrderError::BadRequest("quantity must be greater than 0".into()))`,
-    // with no change needed here.
-    #[allow(dead_code)]
     #[error("{0}")]
     BadRequest(String),
 }
